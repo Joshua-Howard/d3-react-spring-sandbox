@@ -52,7 +52,8 @@ const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
         alignmentBaseline="middle"
         //* Text color
         fill="white"
-        fontSize="14"
+        fontSize="18"
+        fontWeight="bold"
       >
         {animatedProps.t.interpolate(t => format(interpolator(t).value))}
       </animated.text>
@@ -97,30 +98,49 @@ const AnimatedPie = props => {
     cache.current = props.data;
   });
 
+  const mapLegend = data.map((el, index) => (
+    <div
+      key={index}
+      className="mx-3 mapLegendStyles"
+      style={{ backgroundColor: colors(index) }}
+    >
+      {el.data.city}
+    </div>
+  ));
+
   return (
-    <svg width={props.width} height={props.height}>
-      {/* SVG Width and Height are the dimensions of the entire SVG area */}
-      {/* Translate moves the circle right and down to the center of the SVG. Since they will be placed at 0,0 by default. */}
-      {/* g is an svg element that groups other SVG elements. The transformation applied to this g element is applied to its children as well. That's the only reason why we need this particular g element. */}
-      <g transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
-        {/* For each object in the data array, we create a new instance of the Arc functional component */}
-        {data.map((d, i) => (
-          <Arc
-            key={i}
-            index={i}
-            //* previousData is an array with the same structure as the data array, so to get the relevant object => we access the element at the correct index of the previousData array (rather than using the d argument)
-            from={previousData[i]}
-            to={d}
-            //* The same createArc, colors, and format methods are passed be reference to all instances of Arc
-            createArc={createArc}
-            colors={colors}
-            format={format}
-            //* React-Spring
-            animatedProps={animatedProps}
-          />
-        ))}
-      </g>
-    </svg>
+    <div>
+      <div className="row">
+        <div className="col-12 d-flex justify-content-center">
+          <svg width={props.width} height={props.height}>
+            {/* SVG Width and Height are the dimensions of the entire SVG area */}
+            {/* Translate moves the circle right and down to the center of the SVG. Since they will be placed at 0,0 by default. */}
+            {/* g is an svg element that groups other SVG elements. The transformation applied to this g element is applied to its children as well. That's the only reason why we need this particular g element. */}
+            <g
+              transform={`translate(${props.outerRadius} ${props.outerRadius})`}
+            >
+              {/* For each object in the data array, we create a new instance of the Arc functional component */}
+              {data.map((d, i) => (
+                <Arc
+                  key={i}
+                  index={i}
+                  //* previousData is an array with the same structure as the data array, so to get the relevant object => we access the element at the correct index of the previousData array (rather than using the d argument)
+                  from={previousData[i]}
+                  to={d}
+                  //* The same createArc, colors, and format methods are passed be reference to all instances of Arc
+                  createArc={createArc}
+                  colors={colors}
+                  format={format}
+                  //* React-Spring
+                  animatedProps={animatedProps}
+                />
+              ))}
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div className="row mt-4">{mapLegend}</div>
+    </div>
   );
 };
 

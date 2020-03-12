@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
 import './styles.sass';
 
 import AnimatedPie from './animatedPie';
@@ -9,23 +9,23 @@ import AnimatedPie from './animatedPie';
 // const mapDispatchToProps = dispatch => ({});
 
 const TestData = [
-  { city: 0, value: 17 },
-  { city: 1, value: 19 },
-  { city: 2, value: 1 },
-  { city: 3, value: 4 },
-  { city: 4, value: 98 }
+  { city: 'Nassau County', value: 17 },
+  { city: 'New York County', value: 19 },
+  { city: 'Hudson County', value: 1 },
+  { city: 'Rockland County', value: 4 },
+  { city: 'Westchester County', value: 98 }
 ];
 
 const TestData2 = [
-  { city: 0, value: 30 },
-  { city: 1, value: 50 },
-  { city: 2, value: 70 },
-  { city: 3, value: 40 },
-  { city: 4, value: 8 }
+  { city: 'Nassau County', value: 30 },
+  { city: 'New York County', value: 50 },
+  { city: 'Hudson County', value: 70 },
+  { city: 'Rockland County', value: 40 },
+  { city: 'Westchester County', value: 8 }
 ];
 
-const PieChart = ({}) => {
-  const [sourceData, updateSourceData] = useState(false);
+const PieChart = () => {
+  const [sourceData, updateSourceData] = useState(true);
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
@@ -45,7 +45,7 @@ const PieChart = ({}) => {
     window.addEventListener('resize', updateWindowDimensions);
   }, []);
 
-  let chartSize = windowDimensions.width / 3;
+  const chartSize = windowDimensions.width / 3;
 
   return (
     <div>
@@ -54,6 +54,7 @@ const PieChart = ({}) => {
       <div>{JSON.stringify(sourceData ? TestData : TestData2)}</div>
 
       <button
+        type="button"
         className="w-100 my-3"
         onClick={() => updateSourceData(last => !last)}
       >
