@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import './styles.sass';
 
@@ -27,6 +27,26 @@ const TestData2 = [
 const PieChart = ({}) => {
   const [sourceData, updateSourceData] = useState(false);
 
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  const updateWindowDimensions = () => {
+    const dimensionsObject = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+
+    setWindowDimensions(dimensionsObject);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', updateWindowDimensions);
+  }, []);
+
+  let chartSize = windowDimensions.width / 3;
+
   return (
     <div>
       <div>SVG Below</div>
@@ -40,13 +60,48 @@ const PieChart = ({}) => {
         Swap Data
       </button>
 
-      <AnimatedPie
-        data={sourceData ? TestData : TestData2}
-        width={200}
-        height={200}
-        innerRadius={60}
-        outerRadius={100}
-      />
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-6 d-flex justify-content-center">
+            <AnimatedPie
+              data={sourceData ? TestData : TestData2}
+              width={chartSize}
+              height={chartSize}
+              innerRadius={(chartSize / 2) * 0.5}
+              outerRadius={chartSize / 2}
+            />
+          </div>
+          <div className="col-6 d-flex justify-content-center">
+            <AnimatedPie
+              data={sourceData ? TestData : TestData2}
+              width={chartSize}
+              height={chartSize}
+              innerRadius={(chartSize / 2) * 0.5}
+              outerRadius={chartSize / 2}
+            />
+          </div>
+        </div>
+        <div className="row mt-5">
+          <div className="col-6 d-flex justify-content-center">
+            <AnimatedPie
+              data={sourceData ? TestData : TestData2}
+              width={chartSize}
+              height={chartSize}
+              innerRadius={(chartSize / 2) * 0.5}
+              outerRadius={chartSize / 2}
+            />
+          </div>
+          <div className="col-6 d-flex justify-content-center">
+            <AnimatedPie
+              data={sourceData ? TestData : TestData2}
+              width={chartSize}
+              height={chartSize}
+              innerRadius={(chartSize / 2) * 0.5}
+              outerRadius={chartSize / 2}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -52,7 +52,7 @@ const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
         alignmentBaseline="middle"
         //* Text color
         fill="white"
-        fontSize="10"
+        fontSize="14"
       >
         {animatedProps.t.interpolate(t => format(interpolator(t).value))}
       </animated.text>
