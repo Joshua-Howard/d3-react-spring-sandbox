@@ -9,18 +9,6 @@ import * as d3 from 'd3';
 const colors = d3.scaleOrdinal(d3.schemeCategory10);
 //* Rounds numbers. This formats the numbers seen on the pie chart.
 const format = d3.format('.1f');
-const animationConfig = {
-  // eslint-disable-next-line no-unused-vars
-  to: async (next, cancel) => {
-    await next({ t: 1 });
-  },
-  //* 't' moves between 0 and 1 because the interpolator method takes an argument between 0 and 1
-  from: { t: 0 },
-  //* Using animation duration rather than traditional spring behavior. Could customize easing as well.
-  config: { duration: 250 },
-  //* Reset the spring once it gets to its limits
-  reset: true
-};
 
 //* This functional component becomes a child of the parent AnimatedPie component
 // eslint-disable-next-line no-unused-vars
@@ -31,7 +19,7 @@ const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
   return (
     <g>
       {/* Note that a className can be added to this or any other SVG element */}
-      {/* 'animated' is a factory that includes all native elements including the SVG path element */}
+      {/* 'animated' is a react-spring factory that includes all native elements including the SVG path element */}
       <animated.path
         //* The 'd' attribute is the path to be drawn
         d={animatedProps.t.interpolate(t =>
@@ -103,10 +91,6 @@ const AnimatedPie = ({
   //* Generating previousData from what is cached allows React Spring to know what we are moving from => to
   const previousData = createPie(cache.current);
 
-  //* The next two lines are React-Spring
-  const [animatedProps, setAnimatedProps] = useSpring(() => animationConfig);
-  setAnimatedProps(animationConfig);
-
   useEffect(() => {
     //* cache.current persists as the component mounts and unmounts
     //* Every time state changes, we update cache.current with the new props (the values to be displayed)
@@ -122,6 +106,23 @@ const AnimatedPie = ({
       {el.data.city}
     </div>
   ));
+
+  //! The next lines are React-Spring
+  const springProperties = {
+    // eslint-disable-next-line no-unused-vars
+    to: async (next, cancel) => {
+      await next({ t: 1 });
+    },
+    //* 't' moves between 0 and 1 because the interpolator method takes an argument between 0 and 1
+    from: { t: 0 },
+    //* Using animation duration rather than traditional spring behavior. Could customize easing as well.
+    config: { duration: 250 },
+    //* Reset the spring once it gets to its limits
+    reset: true
+  };
+
+  const [animatedProps, setAnimatedProps] = useSpring(() => springProperties);
+  setAnimatedProps(springProperties);
 
   return (
     <div>
@@ -156,7 +157,7 @@ const AnimatedPie = ({
                   createArc={createArc}
                   colors={colors}
                   format={format}
-                  //* React-Spring
+                  //! React-Spring
                   animatedProps={animatedProps}
                 />
               ))}
