@@ -3,26 +3,14 @@ import React, { useState, useEffect } from 'react';
 import './styles.sass';
 
 import AnimatedPie from './animatedPie';
+import * as testData from './testData';
 
 // import * as actions from '../redux/actions/actions';
 // const mapStateToProps = state => ({});
 // const mapDispatchToProps = dispatch => ({});
 
-const TestData = [
-  { city: 'Nassau County', value: 17 },
-  { city: 'New York County', value: 19 },
-  { city: 'Hudson County', value: 1 },
-  { city: 'Rockland County', value: 4 },
-  { city: 'Westchester County', value: 98 }
-];
-
-const TestData2 = [
-  { city: 'Nassau County', value: 30 },
-  { city: 'New York County', value: 50 },
-  { city: 'Hudson County', value: 70 },
-  { city: 'Rockland County', value: 40 },
-  { city: 'Westchester County', value: 8 }
-];
+const TestData1 = testData.data1;
+const TestData2 = testData.data2;
 
 const PieChart = () => {
   const [sourceData, updateSourceData] = useState(true);
@@ -45,13 +33,36 @@ const PieChart = () => {
     window.addEventListener('resize', updateWindowDimensions);
   }, []);
 
+  const dataFilter = (keySelection, data) => {
+    const filteredDataArray = data.reduce((acc, curr) => {
+      acc.push({ city: curr.city, value: curr[keySelection] });
+      return acc;
+    }, []);
+
+    return filteredDataArray;
+  };
+
   const chartSize = windowDimensions.width / 3.3;
+
+  const GoodData1 = dataFilter('good', TestData1);
+  const GoodData2 = dataFilter('good', TestData2);
+
+  const GreatData1 = dataFilter('great', TestData1);
+  const GreatData2 = dataFilter('great', TestData2);
+
+  const ExcellentData1 = dataFilter('excellent', TestData1);
+  const ExcellentData2 = dataFilter('excellent', TestData2);
+
+  const SpectacularData1 = dataFilter('spectacular', TestData1);
+  const SpectacularData2 = dataFilter('spectacular', TestData2);
 
   return (
     <div>
       <div>SVG Below</div>
 
-      <div>{JSON.stringify(sourceData ? TestData : TestData2)}</div>
+      <small className>
+        {JSON.stringify(sourceData ? GoodData1 : GoodData2)}
+      </small>
 
       <button
         type="button"
@@ -65,7 +76,7 @@ const PieChart = () => {
         <div className="row">
           <div className="col-6 d-flex justify-content-center">
             <AnimatedPie
-              data={sourceData ? TestData : TestData2}
+              data={sourceData ? GoodData1 : GoodData2}
               width={chartSize}
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
@@ -75,7 +86,7 @@ const PieChart = () => {
           </div>
           <div className="col-6 d-flex justify-content-center">
             <AnimatedPie
-              data={sourceData ? TestData : TestData2}
+              data={sourceData ? GreatData1 : GreatData2}
               width={chartSize}
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
@@ -87,7 +98,7 @@ const PieChart = () => {
         <div className="row mt-5">
           <div className="col-6 d-flex justify-content-center">
             <AnimatedPie
-              data={sourceData ? TestData : TestData2}
+              data={sourceData ? ExcellentData1 : ExcellentData2}
               width={chartSize}
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
@@ -97,7 +108,7 @@ const PieChart = () => {
           </div>
           <div className="col-6 d-flex justify-content-center">
             <AnimatedPie
-              data={sourceData ? TestData : TestData2}
+              data={sourceData ? SpectacularData1 : SpectacularData2}
               width={chartSize}
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}

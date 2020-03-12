@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import React, { useEffect, useRef } from 'react';
-import { animated, useSpring } from 'react-spring';
+import { animated, useSpring, config } from 'react-spring';
 import * as d3 from 'd3';
 
 //* The argument for scaleOrdinal could alternatively be an array of colors ie ["#1f77b4", "#ff7f0e", "#2ca02c"]
@@ -116,8 +116,9 @@ const AnimatedPie = ({
     //* 't' moves between 0 and 1 because the interpolator method takes an argument between 0 and 1
     from: { t: 0 },
     //* Using animation duration rather than traditional spring behavior. Could customize easing as well.
-    config: { duration: 250 },
-    //* Reset the spring once it gets to its limits
+    // config: { duration: 400 }, // duration-based animation
+    config: config.slow,
+    //* Reset the spring so that it goes: from => to
     reset: true
   };
 
