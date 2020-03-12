@@ -45,7 +45,7 @@ const PieChart = () => {
     window.addEventListener('resize', updateWindowDimensions);
   }, []);
 
-  const chartSize = windowDimensions.width / 3;
+  const chartSize = windowDimensions.width / 3.3;
 
   return (
     <div>
@@ -70,6 +70,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
+              title="Healthy"
             />
           </div>
           <div className="col-6 d-flex justify-content-center">
@@ -79,6 +80,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
+              title="Healthy"
             />
           </div>
         </div>
@@ -90,6 +92,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
+              title="Healthy"
             />
           </div>
           <div className="col-6 d-flex justify-content-center">
@@ -99,6 +102,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
+              title="Healthy"
             />
           </div>
         </div>

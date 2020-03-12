@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useRef } from 'react';
 import { animated, useSpring } from 'react-spring';
 import * as d3 from 'd3';
@@ -9,6 +10,7 @@ const colors = d3.scaleOrdinal(d3.schemeCategory10);
 //* Rounds numbers. This formats the numbers seen on the pie chart.
 const format = d3.format('.1f');
 const animationConfig = {
+  // eslint-disable-next-line no-unused-vars
   to: async (next, cancel) => {
     await next({ t: 1 });
   },
@@ -21,6 +23,7 @@ const animationConfig = {
 };
 
 //* This functional component becomes a child of the parent AnimatedPie component
+// eslint-disable-next-line no-unused-vars
 const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
   //* The method returned by interpolate takes an argument of any number between 0 and 1; it then returns the interpolated value.
   const interpolator = d3.interpolate(from, to);
@@ -66,7 +69,14 @@ const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
   );
 };
 
-const AnimatedPie = props => {
+const AnimatedPie = ({
+  innerRadius,
+  outerRadius,
+  data,
+  width,
+  height,
+  title
+}) => {
   //* Cache is an object with an empty array as the value of the current key
   const cache = useRef([]);
   const createPie = d3
@@ -81,14 +91,14 @@ const AnimatedPie = props => {
     .arc()
     //* Distances are in pixels
     //* Inner radius is the distance of the empty space in the center of the pie chart. 0 will create a pie chart rather than a doughnut chart.
-    .innerRadius(props.innerRadius)
+    .innerRadius(innerRadius)
     //* Outer radius is the distance of the outer edge of the pie chart.
-    .outerRadius(props.outerRadius);
+    .outerRadius(outerRadius);
 
   //* The data comes from the parent component
   //* The data is an array of objects. Each object stores the initial input data object as the value of the data key.
   //* The rest of the object includes information relevent to D3 calculations: index, value, startAngle, endAngle, padAngle
-  const data = createPie(props.data);
+  const chartData = createPie(data);
 
   //* Generating previousData from what is cached allows React Spring to know what we are moving from => to
   const previousData = createPie(cache.current);
@@ -100,12 +110,12 @@ const AnimatedPie = props => {
   useEffect(() => {
     //* cache.current persists as the component mounts and unmounts
     //* Every time state changes, we update cache.current with the new props (the values to be displayed)
-    cache.current = props.data;
+    cache.current = chartData;
   });
 
-  const mapLegend = data.map((el, index) => (
+  const mapLegend = chartData.map((el, index) => (
     <div
-      key={index}
+      key={el.data.city}
       className="mx-3 mapLegendStyles"
       style={{ backgroundColor: colors(index) }}
     >
@@ -117,21 +127,31 @@ const AnimatedPie = props => {
     <div>
       <div className="row">
         <div className="col-12 d-flex justify-content-center">
-          <svg width={props.width} height={props.height}>
+          <svg width={width} height={height}>
             {/* SVG Width and Height are the dimensions of the entire SVG area */}
+
+            {/* Centered Text Element */}
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              fontSize="30"
+              fontWeight="bold"
+            >
+              {title}
+            </text>
+
             {/* Translate moves the circle right and down to the center of the SVG. Since they will be placed at 0,0 by default. */}
             {/* g is an svg element that groups other SVG elements. The transformation applied to this g element is applied to its children as well. That's the only reason why we need this particular g element. */}
-            <g
-              transform={`translate(${props.outerRadius} ${props.outerRadius})`}
-            >
+            <g transform={`translate(${outerRadius} ${outerRadius})`}>
               {/* For each object in the data array, we create a new instance of the Arc functional component */}
-              {data.map((d, i) => (
+              {chartData.map((data, i) => (
                 <Arc
-                  key={i}
+                  key={data.data.city}
                   index={i}
                   //* previousData is an array with the same structure as the data array, so to get the relevant object => we access the element at the correct index of the previousData array (rather than using the d argument)
                   from={previousData[i]}
-                  to={d}
+                  to={data}
                   //* The same createArc, colors, and format methods are passed be reference to all instances of Arc
                   createArc={createArc}
                   colors={colors}
