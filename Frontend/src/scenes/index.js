@@ -33,6 +33,8 @@ const PieChart = () => {
     window.addEventListener('resize', updateWindowDimensions);
   }, []);
 
+  const chartSize = windowDimensions.width / 3.3;
+
   const dataFilter = (keySelection, data) => {
     const filteredDataArray = data.reduce((acc, curr) => {
       acc.push({ city: curr.city, value: curr[keySelection] });
@@ -41,8 +43,6 @@ const PieChart = () => {
 
     return filteredDataArray;
   };
-
-  const chartSize = windowDimensions.width / 3.3;
 
   const GoodData1 = dataFilter('good', TestData1);
   const GoodData2 = dataFilter('good', TestData2);
@@ -81,7 +81,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
-              title="Healthy"
+              title="Good"
             />
           </div>
           <div className="col-6 d-flex justify-content-center">
@@ -91,7 +91,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
-              title="Healthy"
+              title="Great"
             />
           </div>
         </div>
@@ -103,7 +103,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
-              title="Healthy"
+              title="Excellent"
             />
           </div>
           <div className="col-6 d-flex justify-content-center">
@@ -113,7 +113,7 @@ const PieChart = () => {
               height={chartSize}
               innerRadius={(chartSize / 2) * 0.5}
               outerRadius={chartSize / 2}
-              title="Healthy"
+              title="Spectacular"
             />
           </div>
         </div>
