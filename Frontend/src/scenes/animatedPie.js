@@ -6,8 +6,8 @@ import * as d3 from 'd3';
 //* This method returns a function that will always return the same value from the array for any given argument.
 //* It will loop through in order and return the next value in the array if the input is different.
 const colors = d3.scaleOrdinal(d3.schemeCategory10);
-//* Rounds numbers to two decimal places
-const format = d3.format('.2f');
+//* Rounds numbers. This formats the numbers seen on the pie chart.
+const format = d3.format('.1f');
 const animationConfig = {
   to: async (next, cancel) => {
     await next({ t: 1 });
@@ -55,7 +55,12 @@ const Arc = ({ index, from, to, createArc, colors, format, animatedProps }) => {
         fontSize="18"
         fontWeight="bold"
       >
-        {animatedProps.t.interpolate(t => format(interpolator(t).value))}
+        {animatedProps.t.interpolate(
+          t =>
+            // format(interpolator(t).value)
+            Math.round(interpolator(t).value),
+          0
+        )}
       </animated.text>
     </g>
   );
